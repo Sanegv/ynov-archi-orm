@@ -103,8 +103,23 @@ public class SqlOrm {
     }
 
     public void insert(String table, Object object) throws Exception{
-        String req = "INSERT INTO " + table + "(";
-        ArrayList<String> fieldNames = getFieldNames(object);
+        String req = "INSERT INTO " + table + " (";
+        ArrayList<String> names = getFieldNames(object);
+        Hashtable<String, Object> map = getFieldValues(object);
 
+        for(int i = 0; i < names.size()-1; i++) req += names.get(i) + ", ";
+        req += names.get(names.size()-1) + ") VALUES (";
+        for(int i = 0; i < names.size()-1; i++) req += "?, ";
+        req += "?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            for(int i = 0; i < names.size(); i++){
+                statement.setString(i+1, map.get(names.get(i)).toString());
+            }
+            System.out.println(statement);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
