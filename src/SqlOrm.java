@@ -116,10 +116,25 @@ public class SqlOrm {
             for(int i = 0; i < names.size(); i++){
                 statement.setString(i+1, map.get(names.get(i)).toString());
             }
-            System.out.println(statement);
             statement.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    public void createTable(Object object) throws Exception{
+        String table = object.getClass().toString();
+        Field[] fields = getFields(object);
+
+        String req = "CREATE TABLE " + table + " (";
+        for(Field field : fields){
+            req += field.getName() + " " + field.getType() + " NOT NULL , ";
+        }
+        req += "PRIMARY KEY (" + fields[0] + "))";
+        
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            System.out.println(statement);
+            statement.executeUpdate();
         }
     }
 }

@@ -40,6 +40,6 @@ public class App {
         }*/
         
         User user = new User(4, "test", "test@gmail.com", "test");
-        orm.insert("user", user);
+        orm.createTable(user);
     }
 }
