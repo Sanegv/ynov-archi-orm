@@ -96,8 +96,8 @@ public class SqlOrm {
 
         Field[] fields = getFields(object);
         for(Field field : fields){
-            if(field.getType() == Integer.TYPE) map.put(field.getName(),  field.getInt(object));
-            if(field.getType() == field.getName().getClass()) map.put(field.getName(), field.toString());
+            field.setAccessible(true);
+            map.put(field.getName(), field.get(object));
         }
         return map;
     }

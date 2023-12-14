@@ -40,9 +40,7 @@ public class App {
         }*/
         
         User user = new User(4, "test", "test@gmail.com", "test");
-        //Hashtable map = orm.getFieldValues(user);
-        //System.out.println(map.get("name"));
-        Field[] fields = orm.getFields(user);
-        System.out.println(fields[0].get(fields));
+        Hashtable<String, Object> map = orm.getFieldValues(user);
+        System.out.println(map.get("id"));
     }
 }

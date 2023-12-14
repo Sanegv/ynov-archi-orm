@@ -39,6 +39,13 @@ public class User {
         this.id = 1;
     }
 
+    public User(int ID, String login, String email, String password){
+        setEmail(email);
+        setLogin(login);
+        setPassword(password);
+        this.id = ID;
+    }
+
     public String toString(){
         String str = "id: ";
         str += Integer.toString(id);
