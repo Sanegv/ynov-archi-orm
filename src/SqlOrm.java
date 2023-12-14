@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.lang.reflect.*;
+import java.util.Hashtable;
 
 public class SqlOrm {
     private Connection connection;
@@ -72,5 +74,37 @@ public class SqlOrm {
         }
 
         return result;
+    }
+
+    public Field[] getFields(Object object){        
+        return object.getClass().getDeclaredFields();
+    }
+
+    public ArrayList<String> getFieldNames(Object object){
+        Field[] fields = getFields(object);
+
+        ArrayList<String> list = new ArrayList<String>();
+        for(Field field : fields){
+            list.add(field.getName());
+        }
+
+        return list;
+    }
+
+    public Hashtable<String, Object> getFieldValues(Object object) throws Exception{
+        Hashtable<String, Object> map = new Hashtable<String, Object>();
+
+        Field[] fields = getFields(object);
+        for(Field field : fields){
+            if(field.getType() == Integer.TYPE) map.put(field.getName(),  field.getInt(object));
+            if(field.getType() == field.getName().getClass()) map.put(field.getName(), field.toString());
+        }
+        return map;
+    }
+
+    public void insert(String table, Object object) throws Exception{
+        String req = "INSERT INTO " + table + "(";
+        ArrayList<String> fieldNames = getFieldNames(object);
+
     }
 }
