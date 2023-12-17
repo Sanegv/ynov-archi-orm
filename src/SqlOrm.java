@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.lang.reflect.*;
 import java.util.Hashtable;
-
+import java.lang.Exception;
 import com.mysql.cj.exceptions.ExceptionFactory;
 import com.mysql.cj.x.protobuf.Mysqlx.Error;
 
@@ -196,5 +196,12 @@ public class SqlOrm {
             }
             statement.executeUpdate();
         }        
+    }
+
+    public void deleteColumn(String table, String column) throws Exception {
+        String req = "ALTER TABLE " + table + " DROP " + column;
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            statement.executeUpdate();
+        }
     }
 }
