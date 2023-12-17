@@ -218,4 +218,18 @@ public class SqlOrm {
             statement.executeUpdate();
         }
     }
+
+    public void changeVarcharColumnName(String table, String column, String newName)  throws Exception{        
+        String req = "ALTER TABLE " + table + " CHANGE " + column + " " + newName + " VARCHAR(256)";
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            statement.executeUpdate();
+        }
+    }
+
+    public void changeIntColumnName(String table, String column, String newName)  throws Exception{        
+        String req = "ALTER TABLE " + table + " CHANGE " + column + " " + newName + " INT";
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            statement.executeUpdate();
+        }
+    }
 }
