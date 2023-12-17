@@ -156,4 +156,12 @@ public class SqlOrm {
         }*/
         return "TODO";
     }
+
+    public void deleteElementByID(String table, int id) throws Exception{
+        String req = "DELETE FROM " + table + " WHERE ID = " + Integer.toString(id); 
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            System.out.println(statement);
+            statement.executeUpdate();
+        }
+    }
 }
