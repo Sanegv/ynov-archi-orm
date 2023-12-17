@@ -158,8 +158,9 @@ public class SqlOrm {
     }
 
     public void deleteElementByID(String table, int id) throws Exception{
-        String req = "DELETE FROM " + table + " WHERE ID = " + Integer.toString(id); 
+        String req = "DELETE FROM " + table + " WHERE ID = ?"; 
         try (PreparedStatement statement = connection.prepareStatement(req)) {
+            statement.setInt(1, id);
             statement.executeUpdate();
         }
     }
@@ -169,5 +170,31 @@ public class SqlOrm {
         try (PreparedStatement statement = connection.prepareStatement(req)) {
             statement.executeUpdate();
         }
+    }
+
+    public void updateElem(String table, String column, int ID, Object newValue) throws Exception{
+        String req = "UPDATE " + table + " SET " + column + " = ";
+        boolean insertString  = false;
+        switch(newValue){
+            case Integer i:
+                req += i.toString();
+                break;
+            case String s:
+                req += "?";
+                insertString = true;
+                break;
+            default:
+                return;
+        }
+        req += " WHERE ID = ?"; 
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            if(insertString) {
+                statement.setString(1, newValue.toString());
+                statement.setInt(2, ID);
+            } else {
+                statement.setInt(1, ID);
+            }
+            statement.executeUpdate();
+        }        
     }
 }
