@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.lang.reflect.*;
 import java.util.Hashtable;
 
+import com.mysql.cj.exceptions.ExceptionFactory;
+import com.mysql.cj.x.protobuf.Mysqlx.Error;
+
 public class SqlOrm {
     private Connection connection;
 
@@ -123,18 +126,34 @@ public class SqlOrm {
     }
 
     public void createTable(Object object) throws Exception{
-        String table = object.getClass().toString();
+        String table = object.getClass().toString().substring(6); //ignoring the "class " part
         Field[] fields = getFields(object);
 
+        createTable(table, fields);
+    }
+
+    public void createTable(String table, Field[] fields) throws Exception{
         String req = "CREATE TABLE " + table + " (";
-        for(Field field : fields){
-            req += field.getName() + " " + field.getType() + " NOT NULL , ";
-        }
-        req += "PRIMARY KEY (" + fields[0] + "))";
+            for(Field field : fields){
+                req += field + " " + getOrmType(field) + " NOT NULL , ";
+            }
+            req += "PRIMARY KEY (" + fields[0] + "))";
         
-        try (PreparedStatement statement = connection.prepareStatement(req)) {
+        /*try (PreparedStatement statement = connection.prepareStatement(req)) {
             System.out.println(statement);
             statement.executeUpdate();
-        }
+        }*/
+        System.out.println(req);
+    }
+
+    public String getOrmType(Field field) throws Exception{
+        /*switch(field){
+            case String.class:
+                return "INT";
+                break;
+            default:
+                return field.getType().toString();
+        }*/
+        return "TODO";
     }
 }
