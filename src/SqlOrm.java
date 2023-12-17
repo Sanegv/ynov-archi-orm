@@ -204,4 +204,18 @@ public class SqlOrm {
             statement.executeUpdate();
         }
     }
+
+    public void createVarcharColumn(String table, String column) throws Exception{
+        String req = "ALTER TABLE " + table + " ADD " + column + " VARCHAR(256) NOT NULL";
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            statement.executeUpdate();
+        }
+    }
+
+    public void createIntColumn(String table, String column) throws Exception{
+        String req = "ALTER TABLE " + table + " ADD " + column + " INT NOT NULL";
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            statement.executeUpdate();
+        }
+    }
 }
